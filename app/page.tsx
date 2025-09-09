@@ -1,11 +1,35 @@
+"use client";
+
+import { useRef } from "react";
+import PlayBoard, { PlayBoardHandle } from "./play/PlayBoard";
+import Keyboard from "./play/Keyboard";
+
 export default function Home() {
+  const boardRef = useRef<PlayBoardHandle>(null);
   return (
-    <div className="font-sans min-h-screen p-8 sm:p-20">
-      <main className="flex flex-col items-center text-center gap-4 w-full">
-        <h1 className="text-5xl sm:text-6xl font-bold tracking-tight">Wordle</h1>
-        <p className="text-base sm:text-lg text-foreground/70 max-w-prose">
+    <div className="font-sans min-h-screen px-4 py-8 sm:px-6 sm:py-16">
+      <main className="mx-auto w-full max-w-screen-md flex flex-col items-center text-center gap-4">
+        <h1 className="text-4xl sm:text-6xl font-bold tracking-tight">Word Loop</h1>
+        <p className="text-base sm:text-lg text-foreground/70 max-w-prose px-2">
           Get 6 chances to guess a 5-letter word. Get 6 chances to guess a 5-letter word.
         </p>
+        <a
+          href="#play"
+          className="group mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-foreground text-background px-6 py-3 text-base font-semibold shadow-sm transition hover:bg-foreground/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-foreground w-full sm:w-auto"
+        >
+          <span>Play</span>
+         
+        </a>
+        {/* Play area */}
+        {/* The board is placed after the anchor so the link scrolls here */}
+        <div className="w-full">
+          <PlayBoard ref={boardRef} />
+        </div>
+        <Keyboard
+          onLetter={(ch) => boardRef.current?.pressLetter(ch)}
+          onEnter={() => boardRef.current?.pressEnter()}
+          onBackspace={() => boardRef.current?.pressBackspace()}
+        />
       </main>
     </div>
   );
